@@ -9,7 +9,7 @@ api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, 
 
 blockcount = 0
 depthlimit = 3 #resize as you want
-checked = {}
+checked = []
 
 def findblock(id, depth):
 	if id in checked:
