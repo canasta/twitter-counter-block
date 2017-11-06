@@ -8,7 +8,7 @@ auth.set_access_token("Access Token", "Access Token Secret") #YOU MUST FIX HERE
 api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_count=10, retry_delay=5, retry_errors=5)
 
 blockcount = 0
-depthlimit = 3 #resize as you want
+depthlimit = 5 #resize as you want
 checked = []
 
 def findblock(id, depth):
@@ -36,6 +36,7 @@ def findblock(id, depth):
 		try:
 			print("Try to block:", user.screen_name, "(ID:", id, ")")
 			api.create_block(id)
+			return 1
 		except Exception:
 			print("Failed:", user.screen_name, "(ID:", id, ")")
 			return 0
@@ -43,8 +44,7 @@ def findblock(id, depth):
 		nextlist = api.friends_ids(id)
 		for next in nextlist:
 			if depth<depthlimit:
-				res = findblock(next, depth+1)
-				count = count + res
+				count = count + findblock(next, depth+1)
 		return count
 
 if __name__ == "__main__": 
@@ -53,6 +53,5 @@ if __name__ == "__main__":
 	for friend in followings:
 		list = api.friends_ids(friend)
 		for user in list:
-			res = findblock(user, 1)
-			blockcount = blockcount + res
+			blockcount = blockcount + findblock(user, 1)
 	print("Block ", blockcount, " accounts")
