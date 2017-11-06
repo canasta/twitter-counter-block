@@ -52,8 +52,6 @@ if __name__ == "__main__":
 	followings = api.friends_ids(me.screen_name)
 	for friend in followings:
 		list = api.friends_ids(friend)
-		print(len(list))
-		sys.exit()
 		for user in list:
 			res = findblock(user, 1)
 			blockcount = blockcount + res
