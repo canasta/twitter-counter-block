@@ -8,11 +8,13 @@ auth.set_access_token("Access Token", "Access Token Secret")
 api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_count=10, retry_delay=5, retry_errors=5)
 
 blockcount = 0
-depthlimit = 4 #resize as you want
+depthlimit = 3 #resize as you want
 checked = []
 try:
 	with open("./checked.list","r+") as list:
-		checked = list.read().split()
+		lines = list.readlines()
+		for line in lines:
+			checked.append(int(line.split()[1]))
 except:
 	with open("./checked.list","w") as list:
 		checked = []
@@ -46,7 +48,7 @@ def findblock(id, depth):
 			with open("./blocked.list", "a") as list:
 				list.write("%s %s\n"%(user.screen_name,id))
 		except Exception:
-			print("Failed:", user.screen_name, "(ID:", id, ")")
+			print("Failed:", user.screen_name, "(ID:", id, ")")				
 			return -1
 	else: #normal
 		if depth<depthlimit:
